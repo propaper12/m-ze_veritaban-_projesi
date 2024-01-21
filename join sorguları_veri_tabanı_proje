@@ -1,0 +1,71 @@
+#join sorguları 10 tane
+#1=Hangi etkinliğin ne kdar para kazandıgı right join sorgusunu kullanarak yaptım
+USE müze_veri_tabanı;
+select b.EtkinlikID,b.EtkinlikAdi,
+       sum(a.toplam_gelir) as total,a.EtkinlikID as id
+from aylik_satis as a
+right join etkinlikler as b on a.EtkinlikID=b.EtkinlikID
+group by b.EtkinlikAdi;
+
+#2=Sanatcıların müzedeki eser sayısı ile alakalı left join sorgusunu kullandım
+USE müze_veri_tabanı;
+select b.SanatciID,b.Ad,b.Soyad,
+       count(a.EserID )as eser_sayısı,a.SanatciID
+from sanatcı_eser_iliskisi AS a
+left join  sanatci as b on b.SanatciID=a.SanatciID
+group by  b.SanatciID;
+
+#3=Çalısanların hangi salonlarda calıstıgı ve hangi görevi yaptıgına dair bir inner join sorgusunu kullandım
+USE müze_veri_tabanı;
+select a.CalısanID,a.Ad,a.Soyad,
+       b.CalisanID as id, SalonID, Gorev
+from calisanlar as a
+inner join calisan_salon_iliskisi as b on a.CalısanID=b.CalisanID;
+
+#4=Ziyaretçilerin bulundgu tabloyu inner join ile getirdim
+USE müze_veri_tabanı;
+SELECT A.Giriş_id, A.Tarih, A.Giriş_türü, A.Ziyaretçi_adi, A.ziyaretçi_id, A.eposta
+FROM ziyaretciler AS A
+INNER JOIN ziyaretciler AS B ON A.ziyaretçi_id
+group by A.Giriş_id;
+
+#5 Sanatçıların eserlerinin hangi salonda kac tane bulunduga dair left join ile sorgu yazdım
+USE müze_veri_tabanı;
+select a.SanatciID,a.Ad,a.Soyad,a.Tarz,
+       b.EserID,b.EserAdi,b.SanatciID as id,
+       c.SalonID,c.SalonAdi
+from sanatci as a
+left join eserler as b on b.SanatciID=a.SanatciID
+left join  salonlar as c ON c.SalonID;
+
+#6 aylık_satıs tablosunu inner join ile getirdim
+USE müze_veri_tabanı;
+select a.satıs_id,a.Bilet_tipi,a.birim_fiyat,a.toplam_gelir,a.Satıs_miktari
+from aylik_satis as a
+inner join aylik_satis as b on a.satıs_id;
+
+#7 Muzede hangi salonların bulunduguna dairt bir left join sorgusu
+USE müze_veri_tabanı;
+select a.MuzeID,a.MuzeAdi,a.Sehir,
+       b.SalonAdi,b.müze_id,b.SalonID
+from salonlar as b
+left join muze as a on b.müze_id=a.MuzeID;
+
+#8=Müzer tablosu iiner sorgusu ile getirdim
+USE müze_veri_tabanı;
+select a.MuzeID,a.MuzeAdi,a.Sehir
+FROM muze as a
+inner join muze as b on a.MuzeID;
+
+#9=Ekinlik tablosunu inner join
+USE müze_veri_tabanı;
+select a.EtkinlikID,a.EtkinlikAdi,a.SalonID,a.Tarih,a.Ucret
+from etkinlikler as a
+inner join etkinlikler as b on a.EtkinlikID;
+
+#10=ÇALISANLAR tablosunun inner join sorgusu
+USE müze_veri_tabanı;
+select a.CalısanID,a.Ad,a.Soyad,a.Pozisyon,a.Maas
+from calisanlar as a
+inner join calisanlar as b on a.CalısanID
+
